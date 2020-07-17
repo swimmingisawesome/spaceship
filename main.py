@@ -20,14 +20,14 @@ Asteroids = pygame.sprite.Group()
 
   #, (random.randint(10, 100), random.randint(10, 100))
 def init():
-  """
+  
   global AsteroidCount
   Player.reset((20, 200))
-  Asteroid.empty()
+  Asteroids.empty()
   AsteroidCount += 3
-  """
+ 
   for i in range(AsteroidCount):
-    Asteroids.add(Asteroid((400, 300))
+    Asteroids.add(Asteroid((400, 300)))
     
     
     #(random.randint(50, 500), random.randint(50, 700)))
@@ -57,15 +57,17 @@ def main():
           Player.speed[0] = 0
     Player.update()
     Asteroids.update()
+    gets_hit = pygame.sprite.spritecollide(Player, Asteroids, False)
     w.fill(color)
     Asteroids.draw(w)
     w.blit(Player.image, Player.rect)
-    w.blit(Asteroids.image, Asteroids.rect)
+    #w.blit(Asteroids.image, Asteroids.rect)
     pygame.display.flip()
 
-    if Player.checkReset(width):
+    if Player.checkReset(800):
       init()
-
+    elif gets_hit:
+      Player.reset((20, 200))
 if __name__=='__main__':
   main() 
 
