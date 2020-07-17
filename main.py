@@ -38,7 +38,7 @@ def init():
     Asteroids.add(Asteroid((400, 300)))
 def win():
   font = pygame.font.SysFont(None, 70)   
-  text = font.render ("You Escaped!" True, (255, 0, 0))
+  text = font.render("You Escaped!", True, (255, 0, 0))
   text_rect = text.get_rect()
   text_rect.center = (400, 300)
   while True:
