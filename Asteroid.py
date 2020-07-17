@@ -12,7 +12,7 @@ class Asteroid(pygame.sprite.Sprite):
     self.image = pygame.transform.rotate(self.image, int(rotation))
     self.rect.center = pos
 
-    self.speed = pygame.math.Vector2(random.randint(-10, 10), random.randint(-10, 10))
+    self.speed = pygame.math.Vector2(random.randint(1, 3), random.randint(1, 3))
      
     
   def update(self):

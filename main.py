@@ -1,5 +1,6 @@
 import pygame
 import random
+import pandas as pd
 from Ship import *
 from Asteroid import *
 pygame.init()
@@ -11,28 +12,45 @@ w = pygame.display.set_mode((800, 600))
 c = pygame.time.Clock()
 color = (30, 0, 30)
 
-NumLevels = 4
-Level = 1
-AsteroidCount = 3
-Player = Ship((20, 200))
+df = pd.read_csv('game_info.csv')
+
+# df stors the whole dataframe
+#df['PlayerX'] -> gives you acess to the colunm PlayerX
+#df.iloc[row_name/row_number] -> gives you acess to the row
+
+NumLevels = df['LevelNum'].max() 
+Level = df['LevelNum'].min()
+LevelData = df.iloc[Level]
+AsteroidCount = LevelData['AsteroidCount']
+Player = Ship((LevelData['PlayerX'], LevelData['PlayerY']))
 Asteroids = pygame.sprite.Group()
 #Asteroids = Asteroid((random.randint(50, 500), random.randint(50, 700)
 
   #, (random.randint(10, 100), random.randint(10, 100))
 def init():
-  
   global AsteroidCount
-  Player.reset((20, 200))
+  LevelData = df.iloc[Level]
+  Player.reset((LevelData['PlayerX'], LevelData['PlayerY']))
   Asteroids.empty()
-  AsteroidCount += 3
+  AsteroidCount = LevelData['AsteroidCount']
  
   for i in range(AsteroidCount):
     Asteroids.add(Asteroid((400, 300)))
-    
-    
+def win():
+  font = pygame.font.SysFont(None, 70)   
+  text = font.render ("You Escaped!" True, (255, 0, 0))
+  text_rect = text.get_rect()
+  text_rect.center = (400, 300)
+  while True:
+    w.fill(color)
+    w.blit(text, text_rect)
+    pygame.display.flip()
+
+
     #(random.randint(50, 500), random.randint(50, 700)))
 
 def main():
+  global Level
   init()
   while Level <= NumLevels:
     c.tick(60)
@@ -65,9 +83,16 @@ def main():
     pygame.display.flip()
 
     if Player.checkReset(800):
-      init()
+      if Level == NumLevels:
+        break
+      else:
+        Level += 1
+        init()
+
     elif gets_hit:
-      Player.reset((20, 200))
+      Player.reset((LevelData['PlayerX'], LevelData['PlayerY']))
+
+win()
 if __name__=='__main__':
   main() 
 
