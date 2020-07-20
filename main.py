@@ -92,7 +92,7 @@ def main():
     elif gets_hit:
       Player.reset((LevelData['PlayerX'], LevelData['PlayerY']))
 
-win()
+  win()
 if __name__=='__main__':
   main() 
 
